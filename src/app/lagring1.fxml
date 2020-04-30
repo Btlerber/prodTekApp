@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="666.0" style="-fx-background-color: #183b3d#183b3d;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ProdTekAppController">
+
+   <children>
+      <TextArea fx:id="BrukerSvar" layoutX="27.0" layoutY="206.0" prefHeight="317.0" prefWidth="308.0" promptText="Skriv svaret  her:">
+         <cursor>
+            <Cursor fx:constant="NONE" />
+         </cursor></TextArea>
+      <TextArea fx:id="KatalogSvar" layoutX="333.0" layoutY="206.0" opacity="0.8" prefHeight="317.0" prefWidth="308.0" promptText="svaret fra katalogen kommer her">
+         <cursor>
+            <Cursor fx:constant="NONE" />
+         </cursor></TextArea>
+      
+      <TextField fx:id="Nøkkelord" layoutX="340.0" layoutY="526.0" opacity="0.8" prefHeight="27.0" prefWidth="76.0" />
+      <Text fill="WHITE" layoutX="257.0" layoutY="544.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nøkkelord:" wrappingWidth="75.50537359714508">
+         <font>
+            <Font name="Comic Sans MS Bold" size="13.0" />
+         </font></Text>
+      
+      <ButtonBar layoutX="45.0" layoutY="553.0" prefHeight="40.0" prefWidth="552.0">
+         <buttons>
+            <Button fx:id="ForrigeSpørsmål" mnemonicParsing="false" onAction="#handleForrigeSpørsmål" text="Forrige Spørsmål" />
+          <Button fx:id="SjekkNøkkelOrd" mnemonicParsing="false" onAction="#handleSjekkNøkkelordAction" text="Sjekk Nøkkelord" />
+          <Button fx:id="SeSvar" mnemonicParsing="false" onAction="#handleSeSvarAction" prefHeight="27.0" prefWidth="142.0" text="Se svar" />
+          <Button fx:id="NesteSpørmål" defaultButton="true" mnemonicParsing="false" onAction="#handleNesteSpørsmålAction" prefHeight="27.0" prefWidth="132.0" text="Neste Spørsmål" />
+         </buttons>
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ButtonBar>
+      <ButtonBar layoutX="340.0" layoutY="148.0" prefHeight="40.0" prefWidth="308.0" />
+      <CheckBox fx:id="Tilfeldig" layoutX="459.0" layoutY="531.0" mnemonicParsing="false" text="tilfeldig" textFill="WHITE">
+         <font>
+            <Font name="Comic Sans MS Bold" size="13.0" />
+         </font></CheckBox>
+      <CheckBox fx:id="Tilbakelegging" layoutX="537.0" layoutY="531.0" mnemonicParsing="false" text="tilbakelegging" textFill="WHITE">
+         <font>
+            <Font name="Comic Sans MS Bold" size="13.0" />
+         </font></CheckBox>
+      <Pane fx:id="Progressometer" layoutX="14.0" layoutY="5.0" prefHeight="114.0" prefWidth="639.0">
+         <children>
+            <ImageView fitHeight="40.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../appResources/emblem1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="15.0" fitWidth="86.0" layoutX="541.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../appResources/emblem2.png" />
+               </image>
+            </ImageView>
+            <TextArea fx:id="Spørsmål" layoutX="80.0" layoutY="30.0" opacity="0.8" prefHeight="92.0" prefWidth="552.0" promptText="infoskjerm">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </TextArea>
+            <ProgressIndicator fx:id="ProgMeter" layoutX="-15.0" layoutY="37.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="78.0" prefWidth="90.0" progress="0.0">
+               <cursor>
+                  <Cursor fx:constant="S_RESIZE" />
+               </cursor>
+            </ProgressIndicator>
+            <ImageView fitHeight="100.0" fitWidth="96.0" layoutX="-18.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../appResources/tootwhelProg.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="21.0" layoutY="134.0" prefHeight="81.0" prefWidth="627.0">
+         <children>
+            <Text fill="WHITE" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nr i Katalog:">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="13.0" />
+               </font></Text>
+            
+                  <TextField fx:id="SpmNummer" layoutX="75.0" layoutY="1.0" opacity="0.8" prefHeight="27.0" prefWidth="184.0">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </TextField>
+            <Text fill="WHITE" layoutX="2.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kategori:">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="13.0" />
+               </font></Text>
+            <TextField fx:id="Kategori" layoutX="75.0" layoutY="27.0" opacity="0.8" prefHeight="27.0" prefWidth="425.0">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </TextField>
+            <TextField fx:id="PensumSide" layoutX="350.0" layoutY="1.0" opacity="0.8" prefHeight="27.0" prefWidth="150.0">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </TextField>
+            <Text fill="WHITE" layoutX="272.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pensumside:" wrappingWidth="94.09619140625">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="13.0" />
+               </font></Text>
+          <!--<Button fx:id="ForrigeKategori" mnemonicParsing="false" onAction="#handleForrigeKategori" text="forrige kategori" />-->
+            <Button fx:id="NesteKategori" layoutX="505.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleNesteKategori" prefHeight="27.0" prefWidth="120.0" text="Neste kategori" />
+         </children>
+      </Pane>
+      <ImageView blendMode="LIGHTEN" fitHeight="835.0" fitWidth="700.0" layoutX="-5.0" layoutY="-181.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../appResources/boltsNnutsPattern.png" />
+         </image>
+      </ImageView>
+      
+      
+      
+      
+   </children>
+</AnchorPane>
