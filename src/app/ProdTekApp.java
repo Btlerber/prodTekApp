@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 
 public class ProdTekApp extends Application{
-	Stage stage;
+	static Stage stage;
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		

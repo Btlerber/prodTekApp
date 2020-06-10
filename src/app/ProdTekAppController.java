@@ -11,16 +11,21 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import app.SaveAnswer;
 import app.DragAndDrop;
 import appResources.*;
+import app.ProdTekAppTools;
 
 
 
@@ -40,27 +45,27 @@ public class ProdTekAppController{
 	int numbCatalogKeywords;
 	boolean endOfCatalog = false;
 	int catalogLength = 0;
-	
+
 	//statiske varabler alle blir satt før appen launcher
-	static String spmPath = "/Users/Bjorn/Documents/objOri2020/git/tdt4100-v2020-students/prodTekExport/src/appResources/saveFile.txt";
-	static DragAndDrop dragdrop = new DragAndDrop();
-	static boolean dragdropLaunced = false;
-	static boolean pathSet = true; //husk å sette til false ved implementering va dragndrop
-	
-	
-	
-	
-	
+
+
+	static String spmPath = "../appResources/savefile.txt"; //"/Users/Bjorn/prodtekProsjekt/prodTekApp/src/appResources/saveFile.txt";
+	static boolean pathSet = false; //husk å sette til false ved implementering va dragndrop
+
+
+
+
+
 	public void initialize() {//kjøres kun når programmet startes
 		catalogQuestionString = "Hei, velkommen til produksjonsteknikkAppen. Håper dere finner programmet Nyttig. "
 				+ "For å starte trykker dere neste spørsmål. Appen vil lagre svaret deres i tekstfilen 'saveFile.txt' i samme mappe som aplikasjonen er. "
 				+ "denne kan dere sende til hverandre og bytte ut med den dere har, da vil de se svarene deres etter spørsmålskatalogen sitt svar."
 				+ "Inntil videre versjoner av appen, må path føres inn i appen ved hver oppstart";
 		setSpørsmål();
-		
+
 	}
 
-	
+
 	public static void setspmPath(String path){
 		spmPath = path;
 		pathSet = true;
@@ -68,8 +73,8 @@ public class ProdTekAppController{
 	public String getSpmPath() {
 		return spmPath;
 	}
-	
-	
+
+
 	//setter skjermen til controllerattributtene.
 	public void setScreen() {	
 		setCatalogLength(spmPath);
@@ -85,32 +90,33 @@ public class ProdTekAppController{
 		return catalogQuestionNumber;
 	}
 
-	
+
 	@FXML
 	private ProgressIndicator ProgMeter;
-	
+
 	public void setProgMeter(){
 		try {
 			Progress p = new Progress();
 			this.ProgMeter.setProgress(p.checkProgress(spmPath));
-			
-			
+
+
 		} catch (Exception e) {
 			System.out.println("Prøvde å sette progressometer: "+e);
 		}
 	}
 
-	
-	
+
+
 	public int getCatalogLength(){
 		return catalogLength;
 	}
 	public String getCatalogLine(){
 		return catalogLine;
 	}
-	
+
 	@FXML
 	private TextArea Spørsmål;
+
 
 	public void setSpørsmål(){
 		try {
@@ -203,10 +209,10 @@ public class ProdTekAppController{
 
 	@FXML
 	private Button ForrigeKategori;
-	
+
 	@FXML
 	private Button ForrigeSpørsmål;
-	
+
 	@FXML
 	private Button NesteKategori;
 
@@ -221,10 +227,10 @@ public class ProdTekAppController{
 
 	@FXML
 	private Button TidligereSvar;
-	
+
 	@FXML
 	private CheckBox Tilfeldig;
-	
+
 
 	public void setTilfeldig(boolean bool){
 		Tilfeldig.setSelected(bool);
@@ -232,31 +238,31 @@ public class ProdTekAppController{
 	public boolean getTilfeldig() {
 		return Tilfeldig.isSelected();
 	}
-	
+
 
 	@FXML
 	private CheckBox Tilbakelegging;
-	
+
 	public void setTilbakeLegging(boolean bool) {
 		Tilbakelegging.setSelected(bool);
 	}
-	
+
 	public boolean getTilbakelegging() {
 		return Tilbakelegging.isSelected();
 	}
-	
 
-	
+
+
 	// on action metoder
 	/*
 	public void handleForrigeKategori() {
 		lastCategory();
 	}
-	*/
+	 */
 	public void handleForrigeSpørsmål() {
 		this.lastQuestion();
 	}
-	
+
 	public void handleNesteKategori() {
 		if(this.currentLine == -1) {//gjør at man kan trykke neste kategori med en gang appen er i gang
 			handleNesteSpørsmålAction();
@@ -271,31 +277,38 @@ public class ProdTekAppController{
 	public void handleSeSvarAction() {
 		this.setKatalogSvar();
 	}
-	
+
 	public void handleNesteSpørsmålAction() {
-	//  prøver å hente brukersvar og sende det til "SaveUserAnswer-klassen"
+		//  prøver å hente brukersvar og sende det til "SaveUserAnswer-klassen"
 		if(!pathSet){
-			//setSaveFilePath();
+			Stage st = ProdTekApp.stage;
+			Scene sc = st.getScene();
+			DragAndDrop dad = new DragAndDrop(st,sc);
+			dad.getPath();
+			if(ProdTekAppTools.isValidPath(spmPath)){
+				pathSet = true;
+			}
+			//try {wait();} catch (InterruptedException e) {e.printStackTrace();}
 		}else {
 			try { //
-				 Path path = Paths.get(spmPath);
-				 new SaveAnswer(currentString,BrukerSvar.getText().toString(),path);
-				 
+				Path path = Paths.get(spmPath);
+				new SaveAnswer(currentString,BrukerSvar.getText().toString(),path);
+
 			}catch (Exception e){
 				System.out.println("handleNesteSpørsmålAction vil ikke hente/lagre brukersvar: "+e);
 			}
-			
-			
+
+
 			getNextQA();
 			setScreen();
 			BrukerSvar.setText("");
-		
-			}
+
 		}
-	
-	
-	
-	
+	}
+
+
+
+
 	/*public void lastCategory() {
 		double qNum = Double.parseDouble(catalogQuestionNumber);
 		double newQNum = (((qNum-(qNum%10))/10)-9);
@@ -305,12 +318,12 @@ public class ProdTekAppController{
 				qNum = Double.parseDouble(catalogQuestionNumber);
 				getNextQA();
 				System.out.println("i am working");
-				
+
 			}
 			setScreen();
 		}
 	}
-	*/
+	 */
 	public void lastQuestion(){
 		double qNum = Double.parseDouble(catalogQuestionNumber);
 		if(qNum%10==1) {currentLine-=3;}
@@ -322,7 +335,7 @@ public class ProdTekAppController{
 
 	public void nextCategory() {
 		double qDouble = Double.parseDouble(catalogQuestionNumber);
-		
+
 		if (qDouble % 10 == 1) { //sjekker at at while løkka funker. hvis vi er på spm. 1 i en kategori, skal den fortsatt hoppe til neste.
 			getNextQA();
 		}
@@ -345,8 +358,8 @@ public class ProdTekAppController{
 				keyWord = keyWord.substring(0,keyWord.length()-1);
 			}
 			if (userInput.contains(keyWord.toLowerCase())) {
-			this.numbCorrectUserKeywords += 1;
-			catalogKeywords.remove(i);
+				this.numbCorrectUserKeywords += 1;
+				catalogKeywords.remove(i);
 
 			}
 			setNøkkelord(numbCorrectUserKeywords, numbCatalogKeywords);
@@ -388,23 +401,23 @@ public class ProdTekAppController{
 
 
 
-	// TODO Auto-generated method stub
+
 	public void getNextQA(){ //scanner spørsmålet som currentLine står på, om den er på et kategorilinje eller tom, hopper den til neste.
 		try{					// henter inn nytt sprøsmål fra filen og deler det opp i tilegg til å sette oppførsel til spørsmål.
 			int lineToScan;
-			
+
 			/*sjekker om tilfeldig er huket av eller ikke, TODO måtte deaktivere funksjonen for å
 			 * klare testene.
-			*if(getTilfeldig()) {
-			*	currentLine = randomTextLineNumber(catalogLength);
-			*	lineToScan = currentLine;
-			*}
-			*else{
-			*	lineToScan = currentLine;
-			*}
-			*/
+			 *if(getTilfeldig()) {
+			 *	currentLine = randomTextLineNumber(catalogLength);
+			 *	lineToScan = currentLine;
+			 *}
+			 *else{
+			 *	lineToScan = currentLine;
+			 *}
+			 */
 			lineToScan = currentLine;
-			 
+
 			/*if(!getTilbakelegging()) { // todo: nå lager den en ny liste hver gang. kan gjøre om det.
 				Progress p = new Progress();
 				this.answeredLines = p.checkAnsweredLines(spmPath);
@@ -420,19 +433,19 @@ public class ProdTekAppController{
 						this.currentLine = line;	
 					}
 				}
-				
+
 			}
-			*/
+			 */
 			//holder styr på hvilken linje vi er på.
 			lineToScan++; //// må skjønne hvordan refere til subklasser fra en superklasse
 			String fullPartsString = this.scannerIt(lineToScan);
 			this.catalogLine = fullPartsString;
 			//System.out.println("catalogline: "+this.catalogLine);
 			String[] parts = fullPartsString.split(";;;;",-1);
-			
+
 			try {
 				Double questionNumber = Double.parseDouble(parts[0]);
-				
+
 				if((questionNumber % 10)> 0){
 					this.catalogQuestionNumber = parts[0];
 					this.catalogPage = parts[1];
@@ -459,7 +472,7 @@ public class ProdTekAppController{
 		}
 	}
 
-	
+
 	public List<String> findKeyWords(String str) {
 		List<String> list = new ArrayList<String>();
 
@@ -471,14 +484,14 @@ public class ProdTekAppController{
 		}
 		return list;
 	}
-	
+
 	public void setCatalogLength(String spmPath) {
 		try {
 			this.catalogLength = 0;
 			Scanner scanner;
 			Path path = Paths.get(spmPath);
 			scanner = new Scanner(path);
-			
+
 			while(scanner.hasNextLine()) {
 				scanner.nextLine();
 				catalogLength++;
@@ -490,14 +503,14 @@ public class ProdTekAppController{
 			e.printStackTrace();
 		}	
 	}
-	
+
 	public int randomTextLineNumber(int limit){
 		Random randomGen = new Random();
 		int lineNumber = randomGen.nextInt(limit);
 		return  lineNumber;
 	}
-	
-	
+
+
 }
-	
+
 
